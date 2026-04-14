@@ -1,12 +1,6 @@
-/**
- * api.js
- * Shared REST API helper for Nishant Events & Catering.
- * Replaces Firebase SDK - all backend calls go through here.
- */
+import { BASE_URL } from './config.js';
 
-const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-    ? 'http://localhost:5000/api'
-    : 'https://nishant-backend-7ree.onrender.com/api';
+const API_BASE = `${BASE_URL}/api`;
 
 /**
  * Get stored JWT token from localStorage
