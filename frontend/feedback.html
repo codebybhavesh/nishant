@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Give Feedback – Nishant Events</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        body {
+            background: var(--bg-section);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .feedback-container {
+            max-width: 500px;
+            margin: 5rem auto;
+            padding: 2.5rem;
+            background: var(--surface);
+            border-radius: var(--r-xl);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+        }
+
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            margin: 1rem 0 2rem;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            font-size: 2.5rem;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .star-rating label:hover,
+        .star-rating label:hover~label,
+        .star-rating input:checked~label {
+            color: #f59e0b;
+        }
+
+        .btn-submit {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: var(--r-md);
+            width: 100%;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            margin-top: 1rem;
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        #msg {
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <a href="index.html" class="nav-logo"><img src="assets/logo.svg" alt="Nishant Logo"></a>
+        </div>
+    </nav>
+
+    <div class="feedback-container">
+        <h2 style="font-family: var(--font-head); margin-bottom: 0.5rem;">How was your experience?</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem;">We value your feedback to help us
+            improve our services.</p>
+
+        <form id="feedbackForm">
+            <label style="font-weight: 600; font-size: 0.9rem;">Rating *</label>
+            <div class="star-rating">
+                <input type="radio" id="star5" name="rating" value="5" required /><label for="star5">★</label>
+                <input type="radio" id="star4" name="rating" value="4" /><label for="star4">★</label>
+                <input type="radio" id="star3" name="rating" value="3" /><label for="star3">★</label>
+                <input type="radio" id="star2" name="rating" value="2" /><label for="star2">★</label>
+                <input type="radio" id="star1" name="rating" value="1" /><label for="star1">★</label>
+            </div>
+
+            <div class="form-group">
+                <label for="message" style="font-weight: 600; font-size: 0.9rem;">Your Message *</label>
+                <textarea id="message" class="form-control" rows="4"
+                    placeholder="Tell us what you liked or what we can improve..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit" id="submitBtn">Submit Feedback</button>
+            <div id="msg"></div>
+        </form>
+    </div>
+
+    <script type="module" src="js/feedback.js"></script>
+</body>
+
+</html>

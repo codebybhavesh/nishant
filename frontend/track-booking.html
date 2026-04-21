@@ -181,7 +181,7 @@
           <a href="booking.html" class="nav-cta mobile-only">Book Now</a>
         </li>
       </ul>
-      <div class="nav-right" >
+      <div class="nav-right">
         <a href="login.html" id="loginBtn" class="nav-cta">Login</a>
         <button id="logoutBtn" onclick="window.userLogout()" class="nav-cta" style="display:none;">Logout</button>
         <a href="booking.html" class="nav-cta">Book Now</a>
@@ -288,7 +288,11 @@
         <div id="invoiceSection" style="display:none">
           <div class="alert alert-success">✅ Your booking is <strong>Approved!</strong> Your invoice is now ready to
             view.</div>
-          <a href="invoice.html" class="btn btn-accent btn-block" id="invoiceBtn">View Invoice</a>
+          <div style="display:flex; gap:1rem; margin-top:1rem;">
+            <a href="invoice.html" class="btn btn-accent" id="invoiceBtn" style="flex:1">View Invoice</a>
+            <a href="feedback.html" id="feedbackBtn" class="btn btn-outline" style="flex:1; display:none;">Give
+              Feedback</a>
+          </div>
         </div>
 
         <div id="rejectedSection" style="display:none">
@@ -444,6 +448,16 @@
       if (b.status === 'approved') {
         localStorage.setItem('nis_invoice_booking', JSON.stringify(b));
         document.getElementById('invoiceBtn').href = 'invoice.html';
+
+        const fbBtn = document.getElementById('feedbackBtn');
+        if (fbBtn) {
+          if (!b.feedbackGiven) {
+            fbBtn.href = `feedback.html?bookingId=${b._id || b.id}`;
+            fbBtn.style.display = 'block';
+          } else {
+            fbBtn.style.display = 'none';
+          }
+        }
       }
 
       card.scrollIntoView({ behavior: 'smooth', block: 'start' });

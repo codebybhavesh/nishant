@@ -37,7 +37,8 @@ const bookingSchema = new mongoose.Schema(
     tax: { type: Number, default: 0 },
     grandTotal: { type: Number, default: 0 },
     approvedAt: { type: String, default: "" },
-    rejectedAt: { type: String, default: "" }
+    rejectedAt: { type: String, default: "" },
+    feedbackGiven: { type: Boolean, default: false }
   },
   { timestamps: true }
 );

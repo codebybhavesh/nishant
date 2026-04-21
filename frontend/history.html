@@ -456,7 +456,10 @@
           </div>
           <div class="bc-status-wrap">
             <span class="status ${b.status}">${b.status.charAt(0).toUpperCase() + b.status.slice(1)}</span>
-            <a href="track-booking.html?id=${id}" class="btn-sm-outline">View Tracking</a>
+            <div style="display:flex; gap:0.5rem; flex-wrap:wrap; justify-content:flex-end;">
+              <a href="track-booking.html?id=${id}" class="btn-sm-outline">View Tracking</a>
+              ${b.status === 'approved' && !b.feedbackGiven ? `<a href="feedback.html?bookingId=${id}" class="btn-sm-outline" style="border-color:var(--accent); color:var(--accent);">Give Feedback</a>` : ''}
+            </div>
           </div>
         </div>`;
       }).join('');

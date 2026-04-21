@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Feedback – Nishant Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="../css/styles.css" />
+    <style>
+        .fb-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+        }
+
+        .fb-tab {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            border-radius: var(--r-md);
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .fb-tab.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .fb-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r-lg);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .fb-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .fb-author {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .fb-rating {
+            color: #f59e0b;
+        }
+
+        .fb-message {
+            font-style: italic;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .fb-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn-manual {
+            margin-bottom: 2rem;
+        }
+
+        #manualFeedbackModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--surface);
+            padding: 2.5rem;
+            border-radius: var(--r-xl);
+            width: 100%;
+            max-width: 500px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-shell">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="../assets/logo.svg" alt="Nishant Logo" style="height:48px; filter:brightness(0) invert(1);">
+                <small>Admin Panel</small>
+            </div>
+            <nav class="sidebar-nav">
+                <!-- Dynamically populated by admin-sidebar.js -->
+            </nav>
+        </aside>
+
+        <main class="admin-main">
+            <div class="admin-topbar">
+                <h1>Manage Feedback</h1>
+                <button class="btn btn-accent btn-sm" id="openManualModal">+ Add Manual Testimonial</button>
+            </div>
+
+            <div class="admin-content">
+                <div class="fb-tabs">
+                    <div class="fb-tab active" data-status="pending">Pending</div>
+                    <div class="fb-tab" data-status="approved">Approved</div>
+                    <div class="fb-tab" data-status="rejected">Rejected</div>
+                </div>
+
+                <div id="feedbackList">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Manual Feedback Modal -->
+    <div id="manualFeedbackModal">
+        <div class="modal-content">
+            <h3>Add Manual Testimonial</h3>
+            <form id="manualFeedbackForm">
+                <div class="form-group">
+                    <label>Customer Name</label>
+                    <input type="text" id="mName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Rating (1-5)</label>
+                    <input type="number" id="mRating" class="form-control" min="1" max="5" required>
+                </div>
+                <div class="form-group">
+                    <label>Message</label>
+                    <textarea id="mMessage" class="form-control" rows="4" required></textarea>
+                </div>
+                <div style="display:flex; gap:1rem; margin-top:2rem;">
+                    <button type="submit" class="btn btn-accent" style="flex:1">Save Testimonial</button>
+                    <button type="button" class="btn btn-outline" id="closeManualModal" style="flex:1">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/admin-sidebar.js"></script>
+    <script type="module" src="../js/admin-feedback.js"></script>
+</body>
+
+</html>

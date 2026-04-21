@@ -173,14 +173,7 @@
                 <small>Admin Panel</small>
             </div>
             <nav class="sidebar-nav">
-                <a href="admin-dashboard.html">Dashboard</a>
-                <a href="admin-bookings.html">Bookings</a>
-                <a href="custom-menu-requests.html">Custom Requests</a>
-                <a href="manage-packages.html" class="active">Packages</a>
-                <a href="manage-menu.html">Menus</a>
-                <a href="admin-invoice.html">Invoices</a>
-                <a href="reports.html">Reports</a>
-                <a href="admin-contacts.html">Contacts</a>
+                <!-- Dynamically populated by admin-sidebar.js -->
             </nav>
             <div class="sidebar-footer">
                 <a href="#" onclick="event.preventDefault(); window.adminLogout();">Logout</a>
@@ -669,6 +662,7 @@
         window.render();
     </script>
     <script src="../js/main.js"></script>
+    <script src="../js/admin-sidebar.js"></script>
 </body>
 
 </html>

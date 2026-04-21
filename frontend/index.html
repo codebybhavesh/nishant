@@ -140,11 +140,9 @@
         <h2 class="section-title">What Our Clients <span>Say</span></h2>
         <p class="section-subtitle">Real experiences from real celebrations</p>
       </div>
-      <!-- TESTIMONIALS SCROLLABLE WITH ARROWS -->
-      <div class="testimonials-container-wrap">
-        <button class="expertise-nav-btn prev" id="testimonialPrev" aria-label="Previous">❮</button>
-        <div class="testimonials-scroll-container" id="testimonialScroll">
-
+      <!-- DYNAMIC TESTIMONIALS -->
+      <div class="container">
+        <div id="testimonial-container" class="testimonials-scroll-container">
           <!-- Shivani Karwa -->
           <div class="t-card">
             <p>"Nishant and team are extremely professional and they understood very well how we wanted the decor to be
@@ -197,11 +195,13 @@
             </div>
           </div>
 
+          <!-- Dynamically populated by testimonial.js -->
         </div>
-        <button class="expertise-nav-btn next" id="testimonialNext" aria-label="Next">❯</button>
       </div>
     </div>
   </section>
+
+  <script type="module" src="js/testimonial.js"></script>
 
   <!-- CONTACT FORM -->
   <section class="section section-light" id="contact-form">

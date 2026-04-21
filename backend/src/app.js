@@ -10,6 +10,7 @@ import { menusRouter } from "./routes/menus.js";
 import { bookingsRouter } from "./routes/bookings.js";
 import { contactsRouter } from "./routes/contacts.js";
 import { customMenuRequestsRouter } from "./routes/customMenuRequests.js";
+import { feedbackRouter } from "./routes/feedback.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -29,6 +30,7 @@ export function createApp() {
   app.use("/api/bookings", bookingsRouter);
   app.use("/api/contacts", contactsRouter);
   app.use("/api/custom-menu-requests", customMenuRequestsRouter);
+  app.use("/api/feedback", feedbackRouter);
 
   // ── Serve frontend static files ──────────────────────────────────────────
   const frontendDir = path.resolve(__dirname, "../../frontend");
