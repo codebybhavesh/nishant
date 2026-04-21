@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Allow: /favicon.png
+
+Sitemap: https://www.nishantevents.com/sitemap.xml
