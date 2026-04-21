@@ -5,6 +5,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Booking Confirmed – Nishant Events & Catering</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
+  <link rel="apple-touch-icon" href="assets/logo.svg" />
   <meta name="description" content="Your catering booking has been confirmed. Track status and view your invoice." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link
@@ -199,16 +202,16 @@
 
     if (booking.id) {
       document.getElementById('bookingIdChip').textContent = '📋 ' + booking.id;
-      document.getElementById('saveId').textContent        = booking.id;
-      document.getElementById('dName').textContent    = booking.name  || '—';
-      document.getElementById('dPhone').textContent   = booking.phone || '—';
-      document.getElementById('dDate').textContent    = booking.date  || '—';
-      document.getElementById('dType').textContent    = (EVENT_LABELS && EVENT_LABELS[booking.eventType]) || booking.eventType || '—';
-      document.getElementById('dPkg').textContent     = (PKG_LABELS  && PKG_LABELS[booking.pkg]) || booking.pkg || '—';
-      document.getElementById('dGuests').textContent  = (booking.guests || '—') + ' guests';
-      document.getElementById('dVenue').textContent   = booking.venue || 'Not specified';
-      document.getElementById('dTotal').textContent   = booking.grandTotal ? '₹' + Number(booking.grandTotal).toLocaleString('en-IN') : '—';
-      document.getElementById('submittedAt').textContent = 'Today at ' + new Date().toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
+      document.getElementById('saveId').textContent = booking.id;
+      document.getElementById('dName').textContent = booking.name || '—';
+      document.getElementById('dPhone').textContent = booking.phone || '—';
+      document.getElementById('dDate').textContent = booking.date || '—';
+      document.getElementById('dType').textContent = (EVENT_LABELS && EVENT_LABELS[booking.eventType]) || booking.eventType || '—';
+      document.getElementById('dPkg').textContent = (PKG_LABELS && PKG_LABELS[booking.pkg]) || booking.pkg || '—';
+      document.getElementById('dGuests').textContent = (booking.guests || '—') + ' guests';
+      document.getElementById('dVenue').textContent = booking.venue || 'Not specified';
+      document.getElementById('dTotal').textContent = booking.grandTotal ? '₹' + Number(booking.grandTotal).toLocaleString('en-IN') : '—';
+      document.getElementById('submittedAt').textContent = 'Today at ' + new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
     }
   </script>
 </body>
