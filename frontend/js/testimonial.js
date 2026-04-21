@@ -5,7 +5,7 @@ function renderStars(rating) {
 }
 
 async function loadTestimonials() {
-  const container = document.getElementById('testimonial-container');
+  const container = document.getElementById('testimonial-track');
   if (!container) return;
 
   try {

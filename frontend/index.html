@@ -79,9 +79,9 @@
         <p class="section-subtitle">We bring culinary excellence and flawless service to any occasion, big or small.</p>
       </div>
       <!-- EXPERTISE CARDS WITH ARROWS -->
-      <div class="expertise-container-wrap">
+      <div class="expertise-container-wrap carousel-container">
         <button class="expertise-nav-btn prev" id="expertisePrev" aria-label="Previous">❮</button>
-        <div class="expertise-scroll-container" id="expertiseScroll">
+        <div class="expertise-scroll-container carousel-track" id="expertise-track">
           <div class="expertise-card-item">
             <div class="expertise-img" style="background-image: url('assets/Our- Expertise/wedding.png');"></div>
             <div class="expertise-card-overlay"></div>
@@ -141,8 +141,8 @@
         <p class="section-subtitle">Real experiences from real celebrations</p>
       </div>
       <!-- DYNAMIC TESTIMONIALS -->
-      <div class="container">
-        <div id="testimonial-container" class="testimonials-scroll-container">
+      <div class="container carousel-container">
+        <div id="testimonial-track" class="testimonials-scroll-container carousel-track">
           <!-- Shivani Karwa -->
           <div class="t-card">
             <p>"Nishant and team are extremely professional and they understood very well how we wanted the decor to be
@@ -322,8 +322,16 @@
   </footer>
 
   <script src="js/data.js"></script>
+  <script src="js/carousel.js"></script>
   <script src="js/main.js"></script>
   <script type="module" src="js/auth-ui.js"></script>
+  <script>
+    // Initialize Carousels
+    document.addEventListener('DOMContentLoaded', () => {
+      initCarousel("testimonial-track");
+      initCarousel("expertise-track");
+    });
+  </script>
   <script type="module">
     // Handle Contact Form Submission
     import { apiFetch } from './js/api.js';
