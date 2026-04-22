@@ -67,7 +67,19 @@ bookingsRouter.post(
 
     // If package exists, compute totals similar to Firestore admin logic.
     let pricePerPlate = booking.pricePerPlate || 0;
-    if (booking.packageId) {
+    let subtotal = 0;
+
+    if (booking.packages && booking.packages.length > 0) {
+      // New logic for multiple packages
+      booking.packages.forEach(p => {
+        if (p.category === 'catering') {
+          subtotal += (p.price || p.pricePerPlate || 0) * (booking.guestCount || 0);
+        } else {
+          subtotal += (p.price || 0);
+        }
+      });
+    } else if (booking.packageId) {
+      // Legacy logic for single package
       const pkg = await Package.findById(booking.packageId).lean();
       if (pkg) {
         const guests = booking.guestCount || 0;
@@ -77,10 +89,13 @@ bookingsRouter.post(
           if (tier) pricePerPlate = tier.price;
         }
       }
+      subtotal = pricePerPlate * (booking.guestCount || 0);
+    } else {
+      // fallback to whatever was already in subtotal/grandTotal if set
+      subtotal = booking.subtotal || booking.grandTotal || 0;
     }
 
-    const subtotal = pricePerPlate * (booking.guestCount || 0);
-    const tax = Math.round(subtotal * 0.18);
+    const tax = 0; // GST Removed per frontend requirement
     const grandTotal = subtotal + tax;
 
     booking.status = "approved";

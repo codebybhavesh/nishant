@@ -222,7 +222,7 @@
     window.previewInv = function (b) {
       const preview = document.getElementById('invPreview');
       const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-      document.getElementById('pvInvId').textContent = b.invoiceId || ('INV-' + b.id.substring(0, 8).toUpperCase());
+      document.getElementById('pvInvId').textContent = b.invoiceId || ('INV-' + (b._id || b.id).substring(0, 8).toUpperCase());
       document.getElementById('pvDate').textContent = today;
       document.getElementById('pvClient').innerHTML = `<strong>${b.userName || b.name || '—'}</strong><br>${b.phone || ''}<br>${b.email || ''}`;
       document.getElementById('pvEvent').innerHTML = `${(EVENT_LABELS && EVENT_LABELS[b.eventType]) || b.eventType || '—'}<br>📅 ${b.eventDate || b.date || '—'}<br>📍 ${b.address ? b.address.city : '—'}`;
@@ -233,15 +233,16 @@
       if (b.packages && b.packages.length > 0) {
         tbody.innerHTML = b.packages.map(p => {
           let amt = 0;
+          const price = p.price || p.pricePerPlate || 0;
           if (p.category === 'catering') {
-            amt = (p.price || 0) * (b.guestCount || b.guests || 0);
+            amt = price * (b.guestCount || b.guests || 0);
           } else {
-            amt = p.price || 0;
+            amt = price;
           }
           subtotal += amt;
           return `
             <tr>
-              <td>${p.name} ${p.category === 'catering' ? `(${fmt(p.price)} × ${b.guestCount || b.guests || 0} guests)` : '(Base)'}</td>
+              <td>${p.name} ${p.category === 'catering' ? `(${fmt(price)} × ${b.guestCount || b.guests || 0} guests)` : '(Base)'}</td>
               <td style="text-transform:capitalize">${p.category}</td>
               <td style="text-align:right">${fmt(amt)}</td>
             </tr>`;
@@ -260,7 +261,7 @@
       document.getElementById('pvSubT').textContent = fmt(subtotal);
       if (document.getElementById('pvTax')) document.getElementById('pvTax').textContent = '₹0';
       document.getElementById('pvGrand').textContent = fmt(b.grandTotal || b.estimatedTotal || subtotal);
-      document.getElementById('pvLink').href = `../invoice.html?id=${b.id}`;
+      document.getElementById('pvLink').href = `../invoice.html?id=${b._id || b.id}`;
 
       localStorage.setItem('nis_invoice_booking', JSON.stringify(b));
       preview.classList.add('show');

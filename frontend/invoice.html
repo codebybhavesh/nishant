@@ -376,66 +376,96 @@
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
   <script type="module" src="js/auth-ui.js"></script>
-  <script>
-    // Load booking — from localStorage (set by track-booking.html when approved)
-    let inv = null;
-    try { inv = JSON.parse(localStorage.getItem('nis_invoice_booking') || 'null'); } catch (e) { }
+  <script type="module">
+    import { apiFetch } from './js/api.js';
 
-    if (!inv || inv.status !== 'approved') {
-      document.getElementById('noAccess').style.display = 'block';
-    } else {
-      document.getElementById('invoiceWrap').style.display = 'block';
-      document.getElementById('printBar').style.display = 'block';
+    async function initInvoice() {
+      // Load booking — from URL param or localStorage
+      let inv = null;
+      const urlParams = new URLSearchParams(window.location.search);
+      const bookingId = urlParams.get('id');
 
-      const fmt = n => '₹' + Number(n).toLocaleString('en-IN');
-      const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-
-      document.getElementById('invId').textContent = inv.invoiceId || ('INV-' + inv.id.substring(0, 8).toUpperCase());
-      document.getElementById('invDate').textContent = today;
-      document.getElementById('invBookingId').textContent = inv.id;
-      document.getElementById('clientName').textContent = inv.userName || inv.name || '—';
-      document.getElementById('clientPhone').textContent = inv.phone || '—';
-      document.getElementById('clientEmail').textContent = inv.email || '—';
-
-      const eventLabel = (typeof EVENT_LABELS !== 'undefined' && EVENT_LABELS[inv.eventType]) ? EVENT_LABELS[inv.eventType] : (inv.eventType || '—');
-      document.getElementById('invEventType').textContent = eventLabel;
-      document.getElementById('invEventDate').textContent = inv.eventDate || inv.date || '—';
-      document.getElementById('invVenue').textContent = inv.address ? inv.address.city : 'Not specified';
-
-      const tbody = document.getElementById('invItemsBody');
-      let subtotal = 0;
-
-      if (inv.packages && inv.packages.length > 0) {
-        tbody.innerHTML = inv.packages.map(p => {
-          let amt = 0;
-          if (p.category === 'catering') {
-            amt = (p.price || 0) * (inv.guestCount || inv.guests || 0);
-          } else {
-            amt = p.price || 0;
-          }
-          subtotal += amt;
-          return `
-            <tr>
-              <td>${p.name} ${p.category === 'catering' ? `(${fmt(p.price)} × ${inv.guestCount || inv.guests || 0} guests)` : '(Base)'}</td>
-              <td style="text-transform:capitalize">${p.category}</td>
-              <td style="text-align:right">${fmt(amt)}</td>
-            </tr>`;
-        }).join('');
-      } else {
-        subtotal = inv.subtotal || inv.estimatedSubtotal || 0;
-        tbody.innerHTML = `
-          <tr>
-            <td>${inv.pkgName || inv.pkg || 'Catering Services'}</td>
-            <td>Catering</td>
-            <td style="text-align:right">${fmt(subtotal)}</td>
-          </tr>`;
+      if (bookingId) {
+        try {
+          const data = await apiFetch(`/bookings/${bookingId}`);
+          if (data && data.booking) inv = data.booking;
+        } catch (e) {
+          console.error("Failed to fetch booking from API:", e);
+        }
       }
 
-      document.getElementById('totSub').textContent = fmt(subtotal);
-      document.getElementById('totGrand').textContent = fmt(inv.grandTotal || inv.estimatedTotal || subtotal);
+      if (!inv) {
+        try { inv = JSON.parse(localStorage.getItem('nis_invoice_booking') || 'null'); } catch (e) { }
+      }
+
+      if (!inv || inv.status !== 'approved') {
+        document.getElementById('noAccess').style.display = 'block';
+        document.getElementById('invoiceWrap').style.display = 'none';
+        document.getElementById('printBar').style.display = 'none';
+      } else {
+        document.getElementById('noAccess').style.display = 'none';
+        document.getElementById('invoiceWrap').style.display = 'block';
+        document.getElementById('printBar').style.display = 'block';
+
+        const fmt = n => '₹' + Number(n).toLocaleString('en-IN');
+        const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+
+        document.getElementById('invId').textContent = inv.invoiceId || ('INV-' + (inv._id || inv.id).substring(0, 8).toUpperCase());
+        document.getElementById('invDate').textContent = today;
+        document.getElementById('invBookingId').textContent = inv._id || inv.id;
+        document.getElementById('clientName').textContent = inv.userName || inv.name || '—';
+        document.getElementById('clientPhone').textContent = inv.phone || '—';
+        document.getElementById('clientEmail').textContent = inv.email || '—';
+
+        const eventLabel = inv.eventType || '—';
+        document.getElementById('invEventType').textContent = eventLabel;
+        document.getElementById('invEventDate').textContent = inv.eventDate || inv.date || '—';
+
+        const addr = inv.address;
+        if (addr && addr.city) {
+          document.getElementById('invVenue').textContent = `${addr.street ? addr.street + ', ' : ''}${addr.city}${addr.state ? ', ' + addr.state : ''}`;
+        } else {
+          document.getElementById('invVenue').textContent = inv.venue || 'Not specified';
+        }
+
+        const tbody = document.getElementById('invItemsBody');
+        let subtotal = 0;
+
+        if (inv.packages && inv.packages.length > 0) {
+          tbody.innerHTML = inv.packages.map(p => {
+            let amt = 0;
+            const price = p.price || p.pricePerPlate || 0;
+            if (p.category === 'catering') {
+              amt = price * (inv.guestCount || inv.guests || 0);
+            } else {
+              amt = price;
+            }
+            subtotal += amt;
+            return `
+              <tr>
+                <td>${p.name} ${p.category === 'catering' ? `(${fmt(price)} × ${inv.guestCount || inv.guests || 0} guests)` : '(Base)'}</td>
+                <td style="text-transform:capitalize">${p.category}</td>
+                <td style="text-align:right">${fmt(amt)}</td>
+              </tr>`;
+          }).join('');
+        } else {
+          subtotal = inv.subtotal || inv.estimatedSubtotal || 0;
+          tbody.innerHTML = `
+            <tr>
+              <td>${inv.pkgName || inv.pkg || 'Catering Services'}</td>
+              <td>Catering</td>
+              <td style="text-align:right">${fmt(subtotal)}</td>
+            </tr>`;
+        }
+
+        document.getElementById('totSub').textContent = fmt(subtotal);
+        document.getElementById('totGrand').textContent = fmt(inv.grandTotal || inv.estimatedTotal || subtotal);
+      }
     }
 
-    function downloadInvoice() { window.print(); }
+    initInvoice();
+
+    window.downloadInvoice = function () { window.print(); }
   </script>
 </body>
 

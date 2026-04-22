@@ -275,7 +275,7 @@
           <td>${b.eventDate || b.date || '—'}</td>
           <td>${b.packages && b.packages.length > 0 ? b.packages.map(p => p.name).join(' + ') : (b.pkgName || b.pkg || 'Custom Event')}</td>
           <td>${b.guestCount || b.guests || '—'}</td>
-          <td>${b.grandTotal ? '₹' + Number(b.grandTotal).toLocaleString('en-IN') : (b.estimatedTotal ? '<em style="color:var(--text-muted)">≈₹' + Number(b.estimatedTotal).toLocaleString('en-IN') + ' (est.)</em>' : '<em style="color:var(--text-muted)">Pending</em>')}</td>
+          <td>${(b.grandTotal !== undefined && b.grandTotal !== null) ? '₹' + Number(b.grandTotal).toLocaleString('en-IN') : (b.estimatedTotal ? '<em style="color:var(--text-muted)">≈₹' + Number(b.estimatedTotal).toLocaleString('en-IN') + ' (est.)</em>' : '<em style="color:var(--text-muted)">Pending</em>')}</td>
           <td><span class="badge badge-${b.status || 'pending'}">${b.status || 'pending'}</span></td>
           <td>${actionBtns}</td>
         </tr>`;
